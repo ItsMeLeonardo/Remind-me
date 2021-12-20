@@ -23,19 +23,34 @@ const data = [
     completed: false,
   },
 ]
+const FILTER_VALUES = {
+  ALL: 'all',
+  ACTIVE: 'active',
+  COMPLETED: 'completed',
+}
 
 function App() {
   const [todos, setTodos] = useState(data)
+  const [filter, setFilter] = useState(FILTER_VALUES.ALL)
+
+  const todosToShow =
+    filter === FILTER_VALUES.ALL
+      ? todos
+      : filter === FILTER_VALUES.ACTIVE
+      ? todos.filter((todo) => !todo.completed)
+      : todos.filter((todo) => todo.completed)
+
+  console.log({ todosToShow })
 
   return (
     <div>
       <TodoInput addTodo={setTodos} />
       <TodoContent>
-        {todos.map((item) => (
+        {todosToShow.map((item) => (
           <TodoItem key={item.id} todo={item.text} completed={item.completed} />
         ))}
       </TodoContent>
-      <TodoFilters />
+      <TodoFilters filterBy={setFilter} filters={FILTER_VALUES} />
     </div>
   )
 }
