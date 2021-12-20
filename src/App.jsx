@@ -1,5 +1,4 @@
 import './App.css'
-import TodoSearch from './components/TodoSearch'
 import TodoItem from './components/TodoItem'
 import TodoFilters from './components/TodoFilters'
 import TodoContent from './components/TodoContent'
@@ -40,17 +39,28 @@ function App() {
       ? todos.filter((todo) => !todo.completed)
       : todos.filter((todo) => todo.completed)
 
-  console.log({ todosToShow })
+  console.log({ todos })
 
   return (
     <div>
       <TodoInput addTodo={setTodos} />
       <TodoContent>
         {todosToShow.map((item) => (
-          <TodoItem key={item.id} todo={item.text} completed={item.completed} />
+          <TodoItem
+            key={item.id}
+            todo={item}
+            completed={item.completed}
+            toggleCompleteTodo={setTodos}
+          />
         ))}
       </TodoContent>
-      <TodoFilters filterBy={setFilter} filters={FILTER_VALUES} />
+      <TodoFilters
+        filterActive={filter}
+        optionLeft={<p>ALL</p>}
+        filterBy={setFilter}
+        filters={FILTER_VALUES}
+        optionRight={<p>Clear all</p>}
+      />
     </div>
   )
 }
