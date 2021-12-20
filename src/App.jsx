@@ -4,6 +4,7 @@ import TodoFilters from './components/TodoFilters'
 import TodoContent from './components/TodoContent'
 import TodoInput from './components/TodoInput'
 import { useState } from 'react'
+import FilterContent from './components/FilterContent'
 
 const data = [
   {
@@ -61,13 +62,12 @@ function App() {
           />
         ))}
       </TodoContent>
-      <TodoFilters
-        filterActive={filter}
-        optionLeft={<p>{itemLefts} items left</p>}
-        filterBy={setFilter}
-        filters={FILTER_VALUES}
-        optionRight={<button onClick={clearCompleted}>Clear Complete</button>}
-      />
+
+      <FilterContent>
+        <p>{itemLefts} items left</p>
+        <TodoFilters filterActive={filter} filterBy={setFilter} filters={FILTER_VALUES} />
+        <button onClick={clearCompleted}>Clear Complete</button>
+      </FilterContent>
     </div>
   )
 }

@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 
-export default function TodoItem({ todo, toggleCompleteTodo } = {}) {
+function TodoItem({ todo, toggleCompleteTodo } = {}) {
   const [isCompleted, setIsCompleted] = useState(!!todo.completed)
 
   const handleCompleted = () => {
@@ -18,3 +18,5 @@ export default function TodoItem({ todo, toggleCompleteTodo } = {}) {
     </div>
   )
 }
+
+export default React.memo(TodoItem)

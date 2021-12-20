@@ -1,10 +1,6 @@
-export default function TodoFilters({
-  filterActive,
-  filterBy,
-  filters,
-  optionLeft,
-  optionRight,
-}) {
+import React from 'react'
+
+function TodoFilters({ filterActive, filterBy, filters }) {
   const filterTodo = (event) => {
     const input = event.target.closest('input')
     const filter = input.value
@@ -13,7 +9,6 @@ export default function TodoFilters({
 
   return (
     <div className="todo-filters">
-      {optionLeft}
       {Object.values(filters).map((filter, index) => (
         <input
           onClick={filterTodo}
@@ -23,7 +18,10 @@ export default function TodoFilters({
           disabled={filterActive === filter}
         />
       ))}
-      {optionRight}
     </div>
   )
 }
+
+export default React.memo(TodoFilters, (prevProps, nextProps) => {
+  return prevProps.filterActive === nextProps.filterActive
+})

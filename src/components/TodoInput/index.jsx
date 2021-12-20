@@ -2,7 +2,6 @@ export default function TodoInput({ addTodo }) {
   const handleSubmit = (event) => {
     event.preventDefault()
     const input = event.target.todo
-    console.log({ input })
     const todo = {
       id: Date.now(),
       text: input.value,
