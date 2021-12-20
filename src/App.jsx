@@ -39,6 +39,13 @@ function App() {
       ? todos.filter((todo) => !todo.completed)
       : todos.filter((todo) => todo.completed)
 
+  const clearCompleted = () => {
+    const newTodos = todos.filter((todo) => !todo.completed)
+    if (newTodos.length !== todos.length) {
+      setTodos(newTodos)
+    }
+  }
+  const itemLefts = todos.filter((todo) => !todo.completed).length
   console.log({ todos })
 
   return (
@@ -56,10 +63,10 @@ function App() {
       </TodoContent>
       <TodoFilters
         filterActive={filter}
-        optionLeft={<p>ALL</p>}
+        optionLeft={<p>{itemLefts} items left</p>}
         filterBy={setFilter}
         filters={FILTER_VALUES}
-        optionRight={<p>Clear all</p>}
+        optionRight={<button onClick={clearCompleted}>Clear Complete</button>}
       />
     </div>
   )
