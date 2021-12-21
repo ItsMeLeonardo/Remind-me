@@ -20,7 +20,7 @@ function TodoFilters({ filterActive, filterBy, filters }) {
           type="button"
           value={filter}
           disabled={filterActive === filter}
-          className="font-bold text-white capitalize cursor-pointer hover:text-zinc-700"
+          className="font-bold text-white capitalize cursor-pointer hover:text-zinc-700 transition disabled:text-gray-500"
         />
       ))}
     </div>

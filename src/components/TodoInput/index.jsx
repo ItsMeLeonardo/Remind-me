@@ -14,7 +14,7 @@ export default function TodoInput({ addTodo }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full mb-4">
+    <form onSubmit={handleSubmit} className="w-full mb-4 shadow-2xl">
       <input
         type="text"
         name="todo"

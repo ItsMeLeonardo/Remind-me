@@ -4,6 +4,7 @@ import TodoContent from './components/TodoContent'
 import TodoInput from './components/TodoInput'
 import { useState } from 'react'
 import FilterContent from './components/FilterContent'
+import { SunIcon } from './Icons/ThemeIcons'
 
 const data = [
   {
@@ -48,7 +49,14 @@ function App() {
   const itemLefts = todos.filter((todo) => !todo.completed).length
 
   return (
-    <div className="flex flex-col justify-center items-center h-full">
+    <section className="flex flex-col justify-center items-center h-full">
+      <header className="w-11/12 flex mb-6 justify-between md:w-9/12 lg:w-6/12 py-4">
+        <h1 className="text-white text-2xl tracking-wide font-bold">Remind Me</h1>
+        <button>
+          <SunIcon className="text-white" />
+        </button>
+      </header>
+
       <div className="w-11/12 flex flex-col relative md:w-9/12 lg:w-6/12">
         <TodoInput addTodo={setTodos} />
         <TodoContent>
@@ -73,13 +81,13 @@ function App() {
           />
           <button
             onClick={clearCompleted}
-            className="text-xs whitespace-nowrap text-gray-500"
+            className="text-xs whitespace-nowrap text-gray-500 transition hover:underline hover:decoration-indigo-500"
           >
             Clear Complete
           </button>
         </FilterContent>
       </div>
-    </div>
+    </section>
   )
 }
 
