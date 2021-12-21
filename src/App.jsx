@@ -1,4 +1,3 @@
-import './App.css'
 import TodoItem from './components/TodoItem'
 import TodoFilters from './components/TodoFilters'
 import TodoContent from './components/TodoContent'
@@ -47,27 +46,39 @@ function App() {
     }
   }
   const itemLefts = todos.filter((todo) => !todo.completed).length
-  console.log({ todos })
 
   return (
-    <div>
-      <TodoInput addTodo={setTodos} />
-      <TodoContent>
-        {todosToShow.map((item) => (
-          <TodoItem
-            key={item.id}
-            todo={item}
-            completed={item.completed}
-            toggleCompleteTodo={setTodos}
-          />
-        ))}
-      </TodoContent>
+    <div className="flex flex-col justify-center items-center h-full">
+      <div className="w-11/12 flex flex-col relative md:w-9/12 lg:w-6/12">
+        <TodoInput addTodo={setTodos} />
+        <TodoContent>
+          {todosToShow.map((item) => (
+            <TodoItem
+              key={item.id}
+              todo={item}
+              completed={item.completed}
+              toggleCompleteTodo={setTodos}
+            />
+          ))}
+        </TodoContent>
 
-      <FilterContent>
-        <p>{itemLefts} items left</p>
-        <TodoFilters filterActive={filter} filterBy={setFilter} filters={FILTER_VALUES} />
-        <button onClick={clearCompleted}>Clear Complete</button>
-      </FilterContent>
+        <FilterContent>
+          <p className="text-xs whitespace-nowrap text-gray-500">
+            {itemLefts} items left
+          </p>
+          <TodoFilters
+            filterActive={filter}
+            filterBy={setFilter}
+            filters={FILTER_VALUES}
+          />
+          <button
+            onClick={clearCompleted}
+            className="text-xs whitespace-nowrap text-gray-500"
+          >
+            Clear Complete
+          </button>
+        </FilterContent>
+      </div>
     </div>
   )
 }

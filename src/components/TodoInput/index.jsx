@@ -14,9 +14,14 @@ export default function TodoInput({ addTodo }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" name="todo" id="todo" placeholder="create new todo" />
-      <button>Add a new todo</button>
+    <form onSubmit={handleSubmit} className="w-full mb-4">
+      <input
+        type="text"
+        name="todo"
+        id="todo"
+        placeholder="create new todo"
+        className="py-3 px-4 outline-none bg-zinc-800 rounded-md w-full text-white"
+      />
     </form>
   )
 }
