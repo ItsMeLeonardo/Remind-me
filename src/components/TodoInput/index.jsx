@@ -8,7 +8,7 @@ export default function TodoInput({ addTodo }) {
       completed: false,
     }
 
-    addTodo((todos) => [...todos, todo])
+    addTodo({ todo })
 
     input.value = ''
   }

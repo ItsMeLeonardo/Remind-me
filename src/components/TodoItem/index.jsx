@@ -1,27 +1,22 @@
-import React, { useState } from 'react'
+import React from 'react'
 import CheckIcon from '../../Icons/CheckIcon'
+import CloseIcon from '../../Icons/CloseIcon'
 
-function TodoItem({ todo, toggleCompleteTodo } = {}) {
-  const [isCompleted, setIsCompleted] = useState(!!todo.completed)
+const checkboxStyles = {
+  default: 'border-2 border-gray-500',
+  checked: 'checked:from-indigo-500 checked:to-purple-500 checked:border-none',
+}
+
+function TodoItem({ todo, toggleCompleteTodo, deleteTodo } = {}) {
+  const isCompleted = todo.completed
 
   const handleCompleted = () => {
-    const newState = !isCompleted
-    setIsCompleted(newState)
-    toggleCompleteTodo((todos) =>
-      todos.map((t) => (t.id === todo.id ? { ...t, completed: newState } : t)),
-    )
-  }
-
-  const checkboxStyles = {
-    default: 'border-2 border-gray-500',
-    checked: 'checked:from-indigo-500 checked:to-purple-500 checked:border-none',
+    console.log('complet')
+    toggleCompleteTodo({ id: todo.id })
   }
 
   return (
-    <li
-      onClick={handleCompleted}
-      className="cursor-pointer flex items-center gap-4 px-2 py-4 text-white todoItem"
-    >
+    <li className="flex items-center justify-between gap-4 p-4 text-white todoItem">
       <div className="w-6 h-6 flex relative justify-center items-center cursor-pointer">
         {isCompleted && <CheckIcon className="absolute" />}
         <input
@@ -29,12 +24,18 @@ function TodoItem({ todo, toggleCompleteTodo } = {}) {
           checked={isCompleted}
           onChange={handleCompleted}
           id={todo.id}
-          className={`bg-gradient-to-r ${checkboxStyles.checked} ${checkboxStyles.default} appearance-none w-6 h-6 rounded-full`}
+          className={`bg-gradient-to-r ${checkboxStyles.checked} ${checkboxStyles.default} appearance-none w-6 h-6 rounded-full cursor-pointer`}
         />
       </div>
-      <label htmlFor={todo.id} className="cursor-pointer text-sm">
+      <label htmlFor={todo.id} className="cursor-pointer text-sm w-full cursor-pointer ">
         {todo.text}
       </label>
+      <button
+        onClick={() => deleteTodo({ id: todo.id })}
+        className="rounded-full p-2 flex justify-center items-center transform transition duration-500 hover:bg-pink-500 shadow-lg hover:shadow-pink-500/50 active:scale-90"
+      >
+        <CloseIcon />
+      </button>
     </li>
   )
 }

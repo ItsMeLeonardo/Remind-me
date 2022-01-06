@@ -2,7 +2,7 @@ import TodoItem from './components/TodoItem'
 import TodoFilters from './components/TodoFilters'
 import TodoContent from './components/TodoContent'
 import TodoInput from './components/TodoInput'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import FilterContent from './components/FilterContent'
 import { SunIcon } from './Icons/ThemeIcons'
 
@@ -33,12 +33,35 @@ function App() {
   const [todos, setTodos] = useState(data)
   const [filter, setFilter] = useState(FILTER_VALUES.ALL)
 
-  const todosToShow =
-    filter === FILTER_VALUES.ALL
-      ? todos
-      : filter === FILTER_VALUES.ACTIVE
-      ? todos.filter((todo) => !todo.completed)
-      : todos.filter((todo) => todo.completed)
+  let todosToShow = todos
+  if (filter === FILTER_VALUES.ACTIVE) {
+    todosToShow = todos.filter((todo) => !todo.completed)
+  }
+  if (filter === FILTER_VALUES.COMPLETED) {
+    todosToShow = todos.filter((todo) => todo.completed)
+  }
+
+  const toggleTodo = useCallback(({ id }) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) => {
+        if (todo.id === id) {
+          return {
+            ...todo,
+            completed: !todo.completed,
+          }
+        }
+        return todo
+      }),
+    )
+  }, [])
+
+  const deleteTodo = useCallback(({ id }) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id))
+  }, [])
+
+  const addTodo = useCallback(({ todo }) => {
+    setTodos((prevTodos) => [...prevTodos, todo])
+  }, [])
 
   const clearCompleted = () => {
     const newTodos = todos.filter((todo) => !todo.completed)
@@ -58,14 +81,15 @@ function App() {
       </header>
 
       <div className="w-11/12 flex flex-col relative md:w-9/12 lg:w-6/12">
-        <TodoInput addTodo={setTodos} />
+        <TodoInput addTodo={addTodo} />
         <TodoContent>
           {todosToShow.map((item) => (
             <TodoItem
               key={item.id}
               todo={item}
               completed={item.completed}
-              toggleCompleteTodo={setTodos}
+              toggleCompleteTodo={toggleTodo}
+              deleteTodo={deleteTodo}
             />
           ))}
         </TodoContent>
