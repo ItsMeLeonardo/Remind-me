@@ -19,7 +19,7 @@ function TodoFilters({ filterActive, filterBy, filters }) {
           onClick={filterTodo}
           key={`${filter}-${index}`}
           disabled={filterActive === filter}
-          className="font-bold dark:text-white capitalize cursor-pointer hover:text-gray-500 darK:hover:text-zinc-700 transition disabled:text-indigo-400"
+          className="font-bold capitalize cursor-pointer hover:text-gray-500 dark:text-white transition disabled:text-indigo-400 dark:disabled:text-indigo-700"
         >
           {filter}
         </button>

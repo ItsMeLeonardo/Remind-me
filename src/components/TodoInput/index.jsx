@@ -28,7 +28,7 @@ export default function TodoInput({ addTodo }) {
         name="todo"
         id="todo"
         placeholder="create new todo"
-        className="py-3 px-4 outline-none dark:bg-zinc-800 rounded-md w-full dark:text-white"
+        className="py-3 px-4 outline-none dark:bg-zinc-800 focus:outline focus:outline-2 focus:outline-indigo-400 rounded-md w-full dark:text-white"
       />
     </form>
   )
