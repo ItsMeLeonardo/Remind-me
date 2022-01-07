@@ -11,7 +11,7 @@ export default function TodoInput({ addTodo }) {
     }
 
     const todo = {
-      id: Date.now(),
+      id: Date.now().toString(),
       text,
       completed: false,
     }

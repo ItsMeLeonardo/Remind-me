@@ -14,6 +14,10 @@ function TodoItem({ todo, toggleCompleteTodo, deleteTodo } = {}) {
     toggleCompleteTodo({ id: todo.id })
   }
 
+  const handleDelete = () => {
+    deleteTodo({ id: todo.id })
+  }
+
   return (
     <li className="flex items-center justify-between gap-4 p-4 dark:text-white todoItem hover:bg-gray-50 dark:hover:bg-zinc-700 ">
       <div className="w-6 h-6 flex relative justify-center items-center cursor-pointer">
@@ -30,7 +34,7 @@ function TodoItem({ todo, toggleCompleteTodo, deleteTodo } = {}) {
         {todo.text}
       </label>
       <button
-        onClick={() => deleteTodo({ id: todo.id })}
+        onClick={handleDelete}
         className="rounded-full p-2 flex justify-center items-center group transform transition duration-500 hover:bg-pink-500 shadow-lg hover:shadow-pink-500/50 active:scale-90"
       >
         <CloseIcon className="text-zinc-800 group-hover:text-white transition duration-500 dark:text-white" />

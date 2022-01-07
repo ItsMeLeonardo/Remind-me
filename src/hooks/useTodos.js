@@ -1,16 +1,31 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import {
+  deleteCompleted,
+  deleteTodo as deleteTodoFromService,
+  getTodos,
+  saveTodos,
+  toggleTodo as toggleTodoFromService,
+} from '../services/todos'
+import { groupBy } from '../utils/groupBy'
 
 export function useTodos() {
   const [todos, setTodos] = useState([])
+
+  useEffect(() => {
+    if (todos.length !== 0) return
+    getTodos().then(setTodos).catch(console.log)
+  }, [])
 
   const toggleTodo = useCallback(({ id }) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) => {
         if (todo.id === id) {
-          return {
+          const todoUpdated = {
             ...todo,
             completed: !todo.completed,
           }
+          toggleTodoFromService({ todo: todoUpdated }).catch(console.log)
+          return todoUpdated
         }
         return todo
       }),
@@ -18,17 +33,23 @@ export function useTodos() {
   }, [])
 
   const deleteTodo = useCallback(({ id }) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id))
+    deleteTodoFromService({ id }).then(() => {
+      setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id))
+    })
   }, [])
 
   const addTodo = useCallback(({ todo }) => {
-    setTodos((prevTodos) => [...prevTodos, todo])
+    saveTodos({ todo }).then(() => {
+      setTodos((prevTodos) => [...prevTodos, todo])
+    })
   }, [])
 
   const clearCompleted = () => {
-    const newTodos = todos.filter((todo) => !todo.completed)
-    if (newTodos.length !== todos.length) {
-      setTodos(newTodos)
+    const { false: incomplete, true: completed } = groupBy(todos, 'completed')
+    console.log({ incomplete, completed })
+    if (completed) {
+      setTodos(incomplete)
+      deleteCompleted(completed).then()
     }
   }
 
