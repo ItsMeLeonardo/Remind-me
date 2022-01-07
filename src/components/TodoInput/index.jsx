@@ -5,7 +5,10 @@ export default function TodoInput({ addTodo }) {
 
     const text = input.value.trim()
 
-    if (text.length === 0) return
+    if (text.length === 0) {
+      input.value = ''
+      return
+    }
 
     const todo = {
       id: Date.now(),
@@ -25,7 +28,7 @@ export default function TodoInput({ addTodo }) {
         name="todo"
         id="todo"
         placeholder="create new todo"
-        className="py-3 px-4 outline-none bg-zinc-800 rounded-md w-full text-white"
+        className="py-3 px-4 outline-none dark:bg-zinc-800 rounded-md w-full dark:text-white"
       />
     </form>
   )

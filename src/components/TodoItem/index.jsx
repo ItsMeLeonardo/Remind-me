@@ -15,9 +15,9 @@ function TodoItem({ todo, toggleCompleteTodo, deleteTodo } = {}) {
   }
 
   return (
-    <li className="flex items-center justify-between gap-4 p-4 text-white todoItem hover:bg-zinc-700 ">
+    <li className="flex items-center justify-between gap-4 p-4 dark:text-white todoItem hover:bg-gray-50 dark:hover:bg-zinc-700 ">
       <div className="w-6 h-6 flex relative justify-center items-center cursor-pointer">
-        {isCompleted && <CheckIcon className="absolute" />}
+        {isCompleted && <CheckIcon className="absolute text-white dark:text-zinc-800" />}
         <input
           type="checkbox"
           checked={isCompleted}
@@ -31,9 +31,9 @@ function TodoItem({ todo, toggleCompleteTodo, deleteTodo } = {}) {
       </label>
       <button
         onClick={() => deleteTodo({ id: todo.id })}
-        className="rounded-full p-2 flex justify-center items-center transform transition duration-500 hover:bg-pink-500 shadow-lg hover:shadow-pink-500/50 active:scale-90"
+        className="rounded-full p-2 flex justify-center items-center group transform transition duration-500 hover:bg-pink-500 shadow-lg hover:shadow-pink-500/50 active:scale-90"
       >
-        <CloseIcon />
+        <CloseIcon className="text-zinc-800 group-hover:text-white transition duration-500 dark:text-white" />
       </button>
     </li>
   )

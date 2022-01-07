@@ -16,6 +16,9 @@ code {
     monospace;
 }
 
-.todoItem {
+.dark  .todoItem {
   box-shadow: 0 -1px 0 rgba(23, 23, 23, .5)
+}
+.todoItem {
+  box-shadow: 0 -1px 0 rgba(23, 23, 23, 0.16)
 }

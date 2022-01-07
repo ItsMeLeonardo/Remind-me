@@ -2,10 +2,11 @@ import TodoItem from './components/TodoItem'
 import TodoFilters from './components/TodoFilters'
 import TodoContent from './components/TodoContent'
 import TodoInput from './components/TodoInput'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import FilterContent from './components/FilterContent'
-import { SunIcon } from './Icons/ThemeIcons'
+import { SunIcon, MoonIcon } from './Icons/ThemeIcons'
 import { useTodos } from './hooks/useTodos'
+import { useToggle } from './hooks/useToggle'
 
 const FILTER_VALUES = {
   ALL: 'all',
@@ -14,6 +15,7 @@ const FILTER_VALUES = {
 }
 
 function App() {
+  const [isDarkMode, setDarkMode] = useToggle()
   const { todos, addTodo, deleteTodo, clearCompleted, toggleTodo } = useTodos()
 
   const [filter, setFilter] = useState(FILTER_VALUES.ALL)
@@ -26,14 +28,30 @@ function App() {
     todosToShow = todos.filter((todo) => todo.completed)
   }
 
+  useEffect(() => {
+    const htmlRoot = document.querySelector('html')
+    if (isDarkMode) {
+      htmlRoot.classList.add('dark')
+    } else {
+      htmlRoot.classList.remove('dark')
+    }
+  }, [isDarkMode])
+
   const itemLefts = todos.filter((todo) => !todo.completed).length
 
   return (
     <section className="flex flex-col justify-center items-center h-full">
       <header className="w-11/12 flex mb-6 justify-between md:w-9/12 lg:w-6/12 py-4">
-        <h1 className="text-white text-2xl tracking-wide font-bold">Remind Me</h1>
-        <button className="group p-2 transition duration-500 rounded-full shadow-lg hover:shadow-gray-100 hover:bg-white">
-          <SunIcon className="text-white transition duration-500 group-hover:text-zinc-800" />
+        <h1 className="dark:text-white text-2xl tracking-wide font-bold">Remind Me</h1>
+        <button
+          onClick={setDarkMode}
+          className="group p-2 transition duration-500 rounded-full hover:shadow-lg  hover:shadow-gray-100 hover:bg-white"
+        >
+          {isDarkMode ? (
+            <SunIcon className="text-white transition duration-500 group-hover:text-zinc-800" />
+          ) : (
+            <MoonIcon className="" />
+          )}
         </button>
       </header>
 

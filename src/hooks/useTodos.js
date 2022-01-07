@@ -1,25 +1,7 @@
 import { useCallback, useState } from 'react'
 
-const data = [
-  {
-    id: 1,
-    text: 'Learn React',
-    completed: false,
-  },
-  {
-    id: 2,
-    text: 'Learn Redux',
-    completed: false,
-  },
-  {
-    id: 3,
-    text: 'Learn React Router',
-    completed: false,
-  },
-]
-
 export function useTodos() {
-  const [todos, setTodos] = useState(data)
+  const [todos, setTodos] = useState([])
 
   const toggleTodo = useCallback(({ id }) => {
     setTodos((prevTodos) =>
