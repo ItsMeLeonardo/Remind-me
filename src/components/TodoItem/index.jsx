@@ -11,12 +11,11 @@ function TodoItem({ todo, toggleCompleteTodo, deleteTodo } = {}) {
   const isCompleted = todo.completed
 
   const handleCompleted = () => {
-    console.log('complet')
     toggleCompleteTodo({ id: todo.id })
   }
 
   return (
-    <li className="flex items-center justify-between gap-4 p-4 text-white todoItem">
+    <li className="flex items-center justify-between gap-4 p-4 text-white todoItem hover:bg-zinc-700 ">
       <div className="w-6 h-6 flex relative justify-center items-center cursor-pointer">
         {isCompleted && <CheckIcon className="absolute" />}
         <input

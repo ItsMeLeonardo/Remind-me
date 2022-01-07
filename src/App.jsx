@@ -2,27 +2,11 @@ import TodoItem from './components/TodoItem'
 import TodoFilters from './components/TodoFilters'
 import TodoContent from './components/TodoContent'
 import TodoInput from './components/TodoInput'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import FilterContent from './components/FilterContent'
 import { SunIcon } from './Icons/ThemeIcons'
+import { useTodos } from './hooks/useTodos'
 
-const data = [
-  {
-    id: 1,
-    text: 'Learn React',
-    completed: false,
-  },
-  {
-    id: 2,
-    text: 'Learn Redux',
-    completed: false,
-  },
-  {
-    id: 3,
-    text: 'Learn React Router',
-    completed: false,
-  },
-]
 const FILTER_VALUES = {
   ALL: 'all',
   ACTIVE: 'active',
@@ -30,7 +14,8 @@ const FILTER_VALUES = {
 }
 
 function App() {
-  const [todos, setTodos] = useState(data)
+  const { todos, addTodo, deleteTodo, clearCompleted, toggleTodo } = useTodos()
+
   const [filter, setFilter] = useState(FILTER_VALUES.ALL)
 
   let todosToShow = todos
@@ -41,42 +26,14 @@ function App() {
     todosToShow = todos.filter((todo) => todo.completed)
   }
 
-  const toggleTodo = useCallback(({ id }) => {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) => {
-        if (todo.id === id) {
-          return {
-            ...todo,
-            completed: !todo.completed,
-          }
-        }
-        return todo
-      }),
-    )
-  }, [])
-
-  const deleteTodo = useCallback(({ id }) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id))
-  }, [])
-
-  const addTodo = useCallback(({ todo }) => {
-    setTodos((prevTodos) => [...prevTodos, todo])
-  }, [])
-
-  const clearCompleted = () => {
-    const newTodos = todos.filter((todo) => !todo.completed)
-    if (newTodos.length !== todos.length) {
-      setTodos(newTodos)
-    }
-  }
   const itemLefts = todos.filter((todo) => !todo.completed).length
 
   return (
     <section className="flex flex-col justify-center items-center h-full">
       <header className="w-11/12 flex mb-6 justify-between md:w-9/12 lg:w-6/12 py-4">
         <h1 className="text-white text-2xl tracking-wide font-bold">Remind Me</h1>
-        <button>
-          <SunIcon className="text-white" />
+        <button className="group p-2 transition duration-500 rounded-full shadow-lg hover:shadow-gray-100 hover:bg-white">
+          <SunIcon className="text-white transition duration-500 group-hover:text-zinc-800" />
         </button>
       </header>
 
