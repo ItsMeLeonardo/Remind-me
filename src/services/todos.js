@@ -14,9 +14,7 @@ const dbPromise = openDB('todos', 1, {
  */
 export const getTodos = async () => {
   const db = await dbPromise
-  const response = await db.getAll(STORE_NAME)
-  console.log({ response })
-  return response
+  return await db.getAll(STORE_NAME)
 }
 
 /**
@@ -26,16 +24,12 @@ export const getTodos = async () => {
  */
 export const saveTodos = async ({ todo }) => {
   const db = await dbPromise
-  const response = await db.put(STORE_NAME, todo, todo.id)
-
-  console.log({ response })
-  return response
+  return await db.put(STORE_NAME, todo, todo.id)
 }
 
 export const toggleTodo = async ({ todo }) => {
   const db = await dbPromise
-  const updated = await db.put(STORE_NAME, todo, todo.id)
-  console.log({ updated })
+  await db.put(STORE_NAME, todo, todo.id)
 }
 
 /**
@@ -45,8 +39,7 @@ export const toggleTodo = async ({ todo }) => {
  */
 export const deleteTodo = async ({ id }) => {
   const db = await dbPromise
-  const response = await db.delete(STORE_NAME, id)
-  console.log({ response })
+  await db.delete(STORE_NAME, id)
 }
 
 /**

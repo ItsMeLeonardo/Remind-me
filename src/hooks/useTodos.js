@@ -46,9 +46,8 @@ export function useTodos() {
 
   const clearCompleted = () => {
     const { false: incomplete, true: completed } = groupBy(todos, 'completed')
-    console.log({ incomplete, completed })
     if (completed) {
-      setTodos(incomplete)
+      setTodos(incomplete || [])
       deleteCompleted(completed).then()
     }
   }
