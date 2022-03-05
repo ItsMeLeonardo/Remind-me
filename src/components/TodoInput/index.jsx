@@ -3,12 +3,10 @@ export default function TodoInput({ addTodo }) {
     event.preventDefault()
     const input = event.target.todo
 
-    const text = input.value.trim()
+    const text = input?.value?.trim()
 
-    if (text.length === 0) {
-      input.value = ''
-      return
-    }
+    if (!text) return
+    if (text.length === 0) return (input.value = '')
 
     const todo = {
       id: Date.now().toString(),
