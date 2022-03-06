@@ -30,10 +30,11 @@ function TodoItem({ todo, toggleCompleteTodo, deleteTodo } = {}) {
           className={`bg-gradient-to-r ${checkboxStyles.checked} ${checkboxStyles.default} appearance-none w-6 h-6 rounded-full cursor-pointer`}
         />
       </div>
-      <label htmlFor={todo.id} className="cursor-pointer text-sm w-full cursor-pointer ">
+      <label htmlFor={todo.id} className="cursor-pointer text-sm w-full">
         {todo.text}
       </label>
       <button
+        aria-label="delete"
         onClick={handleDelete}
         className="rounded-full p-2 flex justify-center items-center group transform transition duration-500 hover:bg-pink-500 shadow-lg hover:shadow-pink-500/50 active:scale-90"
       >
