@@ -9,7 +9,7 @@ export default function TodoInput({ addTodo }) {
     if (!text) return (input.value = '')
 
     const todo = {
-      id: Date.now().toString(),
+      id: globalThis.crypto.randomUUID(),
       text,
       completed: false,
     }
@@ -25,6 +25,7 @@ export default function TodoInput({ addTodo }) {
         name="todo"
         id="todo"
         placeholder="create new todo"
+        autoComplete="off"
         className="py-3 px-4 outline-none dark:bg-zinc-800 focus:outline focus:outline-2 focus:outline-indigo-400 rounded-md w-full dark:text-white"
       />
     </form>
