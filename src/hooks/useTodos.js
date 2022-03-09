@@ -40,7 +40,7 @@ export function useTodos() {
 
   const addTodo = useCallback(({ todo }) => {
     saveTodos({ todo }).then(() => {
-      setTodos((prevTodos) => [...prevTodos, todo])
+      setTodos((prevTodos) => [todo, ...prevTodos])
     })
   }, [])
 
