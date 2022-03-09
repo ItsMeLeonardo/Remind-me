@@ -1,12 +1,14 @@
+import { useState } from 'react'
+import { motion, AnimatePresence, Reorder } from 'framer-motion'
+
 import TodoItem from './components/TodoItem'
 import TodoFilters from './components/TodoFilters'
 import TodoContent from './components/TodoContent'
 import TodoInput from './components/TodoInput'
-import { useEffect, useState } from 'react'
 import FilterContent from './components/FilterContent'
-import { SunIcon, MoonIcon } from './Icons/ThemeIcons'
+import Header from './components/Header'
+
 import { useTodos } from './hooks/useTodos'
-import { useToggle } from './hooks/useToggle'
 
 const FILTER_VALUES = {
   ALL: 'all',
@@ -15,8 +17,7 @@ const FILTER_VALUES = {
 }
 
 function App() {
-  const [isDarkMode, setDarkMode] = useToggle()
-  const { todos, addTodo, deleteTodo, clearCompleted, toggleTodo } = useTodos()
+  const { todos, addTodo, deleteTodo, clearCompleted, toggleTodo, setTodos } = useTodos()
 
   const [filter, setFilter] = useState(FILTER_VALUES.ALL)
 
@@ -28,45 +29,30 @@ function App() {
     todosToShow = todos.filter((todo) => todo.completed)
   }
 
-  useEffect(() => {
-    const htmlRoot = document.querySelector('html')
-    if (isDarkMode) {
-      htmlRoot.classList.add('dark')
-    } else {
-      htmlRoot.classList.remove('dark')
-    }
-  }, [isDarkMode])
-
   const itemLefts = todos.filter((todo) => !todo.completed).length
 
   return (
     <section className="flex flex-col justify-center items-center h-full">
-      <header className="w-11/12 flex mb-6 justify-between md:w-9/12 lg:w-6/12 py-4">
-        <h1 className="dark:text-white text-2xl tracking-wide font-bold">Remind Me</h1>
-        <button
-          onClick={setDarkMode}
-          className="group p-2 transition duration-500 rounded-full hover:shadow-lg  hover:shadow-gray-100 hover:bg-white"
-        >
-          {isDarkMode ? (
-            <SunIcon className="text-white transition duration-500 group-hover:text-zinc-800" />
-          ) : (
-            <MoonIcon className="" />
-          )}
-        </button>
-      </header>
+      <Header />
 
-      <div className="w-11/12 flex flex-col relative md:w-9/12 lg:w-6/12">
+      <motion.div className="w-11/12 flex flex-col relative md:w-9/12 lg:w-6/12">
         <TodoInput addTodo={addTodo} />
         <TodoContent>
-          {todosToShow.map((item) => (
-            <TodoItem
-              key={item.id}
-              todo={item}
-              completed={item.completed}
-              toggleCompleteTodo={toggleTodo}
-              deleteTodo={deleteTodo}
-            />
-          ))}
+          <Reorder.Group axis="y" values={todosToShow} onReorder={setTodos}>
+            <AnimatePresence>
+              {todosToShow.map((item, index) => (
+                <Reorder.Item key={item.id} value={item}>
+                  <TodoItem
+                    todo={item}
+                    completed={item.completed}
+                    toggleCompleteTodo={toggleTodo}
+                    deleteTodo={deleteTodo}
+                    index={index}
+                  />
+                </Reorder.Item>
+              ))}
+            </AnimatePresence>
+          </Reorder.Group>
         </TodoContent>
 
         <FilterContent>
@@ -85,7 +71,7 @@ function App() {
             Clear Complete
           </button>
         </FilterContent>
-      </div>
+      </motion.div>
     </section>
   )
 }

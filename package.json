@@ -9,6 +9,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "framer-motion": "^6.2.8",
     "idb": "^7.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
