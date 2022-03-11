@@ -27,9 +27,17 @@ export const saveTodos = async ({ todo }) => {
   return await db.put(STORE_NAME, todo, todo.id)
 }
 
+/**
+ *
+ * @param {Object} todo the todo to change the status in DB
+ */
 export const toggleTodo = async ({ todo }) => {
+  const todoUpdated = {
+    ...todo,
+    completed: !todo.completed,
+  }
   const db = await dbPromise
-  await db.put(STORE_NAME, todo, todo.id)
+  await db.put(STORE_NAME, todoUpdated, todo.id)
 }
 
 /**

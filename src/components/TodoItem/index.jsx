@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react'
 import { motion, useAnimation } from 'framer-motion'
 
+import { useDispatch } from 'react-redux'
+import { todoActions } from '../../store'
+
+import { toggleTodo, deleteTodo } from '../../services/todos'
+
 import CheckIcon from '../../Icons/CheckIcon'
 import CloseIcon from '../../Icons/CloseIcon'
 
@@ -33,7 +38,9 @@ const iconVariants = {
   },
 }
 
-function TodoItem({ todo, toggleCompleteTodo, deleteTodo, index } = {}) {
+function TodoItem({ todo, index } = {}) {
+  const dispatch = useDispatch()
+
   const controls = useAnimation()
 
   const isCompleted = todo.completed
@@ -46,12 +53,14 @@ function TodoItem({ todo, toggleCompleteTodo, deleteTodo, index } = {}) {
     }
   }, [isCompleted])
 
-  const handleCompleted = () => {
-    toggleCompleteTodo({ id: todo.id })
+  const toggleComplete = async () => {
+    dispatch(todoActions.toggleTodo(todo.id))
+    await toggleTodo({ todo })
   }
 
-  const handleDelete = () => {
-    deleteTodo({ id: todo.id })
+  const handleDelete = async () => {
+    dispatch(todoActions.deleteTodo(todo.id))
+    await deleteTodo({ id: todo.id })
   }
 
   return (
@@ -76,7 +85,7 @@ function TodoItem({ todo, toggleCompleteTodo, deleteTodo, index } = {}) {
         <motion.input
           type="checkbox"
           checked={isCompleted}
-          onChange={handleCompleted}
+          onChange={toggleComplete}
           id={todo.id}
           className={`bg-gradient-to-r ${checkboxStyles.checked} appearance-none w-6 h-6 rounded-full cursor-pointer`}
         />

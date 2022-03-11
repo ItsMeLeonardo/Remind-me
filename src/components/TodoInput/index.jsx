@@ -1,5 +1,11 @@
-export default function TodoInput({ addTodo }) {
-  const handleSubmit = (event) => {
+import { saveTodos } from '../../services/todos'
+import { useDispatch } from 'react-redux'
+import { todoActions } from '../../store'
+
+export default function TodoInput() {
+  const dispatch = useDispatch()
+
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
     const input = event.target.todo
@@ -14,7 +20,8 @@ export default function TodoInput({ addTodo }) {
       completed: false,
     }
 
-    addTodo({ todo })
+    dispatch(todoActions.addTodo(text))
+    await saveTodos({ todo })
     input.value = ''
   }
 

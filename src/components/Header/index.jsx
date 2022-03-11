@@ -15,6 +15,7 @@ export default function index() {
       htmlRoot.classList.remove('dark')
     }
   }, [isDarkMode])
+
   return (
     <header className="w-11/12 flex items-center justify-between mb-6 md:w-9/12 lg:w-6/12 py-4">
       <motion.h1
