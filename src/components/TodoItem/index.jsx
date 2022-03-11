@@ -65,7 +65,6 @@ function TodoItem({ todo, toggleCompleteTodo, deleteTodo, index } = {}) {
       layoutId={todo.id}
       className="flex items-center justify-between gap-4 p-4 rounded hover:bg-gray-50 hover:cursor-grab active:shadow-3xl active:cursor-grabbing dark:text-white dark:hover:bg-zinc-700"
     >
-      {/* FIXME: complete the animation :D */}
       <motion.div
         animate={controls}
         variants={iconVariants}
