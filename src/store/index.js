@@ -1,4 +1,5 @@
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 import { todoReducer, todoActions } from './todoReducer'
@@ -9,5 +10,5 @@ const reducer = combineReducers({
   filter: filterReducer,
 })
 
-export const store = createStore(reducer, composeWithDevTools())
+export const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
 export { todoActions, filterActions, FILTER_VALUES }

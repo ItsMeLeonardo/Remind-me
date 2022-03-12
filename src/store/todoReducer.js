@@ -1,3 +1,5 @@
+import { saveTodos, deleteCompleted, toggleTodo, deleteTodo } from '../services/todos'
+
 export const todoReducer = (state = [], action) => {
   switch (action.type) {
     case 'INITIAL_TODO': {
@@ -58,51 +60,69 @@ export const todoActions = {
   /**
    *
    * @param {String} text the content of todo
-   * @returns {Object: {type: String, payload: Object}} the payload object
+   * @returns Redux-thunk action
    */
   addTodo: (text) => {
-    const newTodo = {
+    const todo = {
       id: globalThis.crypto.randomUUID(),
       text,
       completed: false,
     }
-    return {
-      type: 'ADD_TODO',
-      payload: { newTodo },
+
+    return async (dispatch) => {
+      await saveTodos({ todo })
+      dispatch({
+        type: 'ADD_TODO',
+        payload: { newTodo: todo },
+      })
     }
   },
 
   /**
    *
    * @param {Number} id the id to delete todo
-   * @returns {Object: {type: String, payload: Object}} the payload object
+   * @returns Redux-thunk action
    */
   deleteTodo: (id) => {
-    return {
-      type: 'DELETE_TODO',
-      payload: { id },
+    return async (dispatch) => {
+      await deleteTodo({ id })
+      dispatch({
+        type: 'DELETE_TODO',
+        payload: { id },
+      })
     }
   },
 
   /**
    *
    * @param {Number} id the id to toggle todo
-   * @returns {Object: {type: String, payload: Object}} the payload object
+   * @returns Redux-thunk action
    */
   toggleTodo: (id) => {
-    return {
-      type: 'TOGGLE_TODO',
-      payload: { id },
+    return async (dispatch, getState) => {
+      const todo = getState().todos.find((todo) => todo.id === id)
+      await toggleTodo({ todo })
+      dispatch({
+        type: 'TOGGLE_TODO',
+        payload: { id },
+      })
     }
   },
 
   /**
    * @description clear all completed todos
-   * @returns {Object: {type: String}} the payload object
+   * @returns Redux-thunk action
    */
   clearCompleted: () => {
-    return {
-      type: 'CLEAR_COMPLETE',
+    return async (dispatch, getState) => {
+      const completedTodo = getState().todos.filter((todo) => todo.completed)
+      if (completedTodo.length === 0) {
+        return
+      }
+      await deleteCompleted(completedTodo)
+      dispatch({
+        type: 'CLEAR_COMPLETE',
+      })
     }
   },
 

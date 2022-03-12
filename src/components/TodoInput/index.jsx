@@ -1,4 +1,3 @@
-import { saveTodos } from '../../services/todos'
 import { useDispatch } from 'react-redux'
 import { todoActions } from '../../store'
 
@@ -14,14 +13,7 @@ export default function TodoInput() {
 
     if (!text) return (input.value = '')
 
-    const todo = {
-      id: globalThis.crypto.randomUUID(),
-      text,
-      completed: false,
-    }
-
     dispatch(todoActions.addTodo(text))
-    await saveTodos({ todo })
     input.value = ''
   }
 

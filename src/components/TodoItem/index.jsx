@@ -4,8 +4,6 @@ import { motion, useAnimation } from 'framer-motion'
 import { useDispatch } from 'react-redux'
 import { todoActions } from '../../store'
 
-import { toggleTodo, deleteTodo } from '../../services/todos'
-
 import CheckIcon from '../../Icons/CheckIcon'
 import CloseIcon from '../../Icons/CloseIcon'
 
@@ -55,12 +53,10 @@ function TodoItem({ todo, index } = {}) {
 
   const toggleComplete = async () => {
     dispatch(todoActions.toggleTodo(todo.id))
-    await toggleTodo({ todo })
   }
 
   const handleDelete = async () => {
     dispatch(todoActions.deleteTodo(todo.id))
-    await deleteTodo({ id: todo.id })
   }
 
   return (

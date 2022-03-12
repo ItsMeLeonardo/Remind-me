@@ -3,8 +3,6 @@ import { motion } from 'framer-motion'
 import { useSelector, useDispatch } from 'react-redux'
 import { todoActions } from './store'
 
-import { deleteCompleted } from './services/todos'
-
 import TodoFilters from './components/TodoFilters'
 import TodoList from './components/TodoList'
 import TodoInput from './components/TodoInput'
@@ -21,7 +19,6 @@ function App() {
 
   const onClearCompleted = () => {
     //TODO: add modal to confirm this action
-    deleteCompleted(todos.filter((todo) => todo.completed))
     dispatch(todoActions.clearCompleted())
   }
 
