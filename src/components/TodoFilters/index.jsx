@@ -1,12 +1,12 @@
 import React from 'react'
 
-function TodoFilters({ filterActive, filterBy, filters }) {
-  const filterTodo = (event) => {
-    const button = event.target.closest('button')
+import TextFilterBtn from './TextFilterBtn'
 
-    const filter = button.textContent
-    filterBy(filter)
-  }
+import { useFilter } from '../../hooks/useFilter'
+
+function TodoFilters() {
+  const { filter, filterByActive, filterByCompleted, resetFilter, FILTER_VALUES } =
+    useFilter()
 
   const mdClasses = 'md:relative md:inset-0 md:justify-center md:gap-8'
 
@@ -14,16 +14,21 @@ function TodoFilters({ filterActive, filterBy, filters }) {
     <div
       className={`absolute w-full -bottom-16 dark:bg-zinc-800 px-2 py-4 rounded-md flex justify-evenly ${mdClasses}`}
     >
-      {Object.values(filters).map((filter, index) => (
-        <button
-          onClick={filterTodo}
-          key={`${filter}-${index}`}
-          disabled={filterActive === filter}
-          className="font-bold capitalize cursor-pointer hover:text-gray-500 dark:text-white transition disabled:text-indigo-400 dark:disabled:text-indigo-700"
-        >
-          {filter}
-        </button>
-      ))}
+      <TextFilterBtn
+        label={FILTER_VALUES.ALL}
+        isActive={FILTER_VALUES.ALL === filter}
+        onClick={resetFilter}
+      />
+      <TextFilterBtn
+        label={FILTER_VALUES.ACTIVE}
+        isActive={FILTER_VALUES.ACTIVE === filter}
+        onClick={filterByActive}
+      />
+      <TextFilterBtn
+        label={FILTER_VALUES.COMPLETED}
+        isActive={FILTER_VALUES.COMPLETED === filter}
+        onClick={filterByCompleted}
+      />
     </div>
   )
 }
