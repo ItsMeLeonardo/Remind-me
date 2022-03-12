@@ -21,6 +21,12 @@ function App() {
 
   const [filter, setFilter] = useState(FILTER_VALUES.ALL)
 
+  const onReorder = (todos) => {
+    if (filter !== FILTER_VALUES.ALL) {
+      return
+    }
+    setTodos(todos)
+  }
   let todosToShow = todos
   if (filter === FILTER_VALUES.ACTIVE) {
     todosToShow = todos.filter((todo) => !todo.completed)
@@ -38,7 +44,7 @@ function App() {
       <motion.div className="w-11/12 flex flex-col relative md:w-9/12 lg:w-6/12">
         <TodoInput addTodo={addTodo} />
         <TodoContent>
-          <Reorder.Group axis="y" values={todosToShow} onReorder={setTodos}>
+          <Reorder.Group axis="y" values={todos} onReorder={onReorder}>
             <AnimatePresence>
               {todosToShow.map((item, index) => (
                 <Reorder.Item key={item.id} value={item}>

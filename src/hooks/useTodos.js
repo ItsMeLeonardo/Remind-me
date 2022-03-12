@@ -58,5 +58,6 @@ export function useTodos() {
     deleteTodo,
     addTodo,
     clearCompleted,
+    setTodos,
   }
 }
