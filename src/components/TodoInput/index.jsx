@@ -1,4 +1,11 @@
-export default function TodoInput({ addTodo }) {
+import shallow from 'zustand/shallow'
+import { useTodoStore } from '../../store/todoStore'
+
+const selector = (state) => state.addTodo
+
+export default function TodoInput() {
+  const addTodo = useTodoStore(selector, shallow)
+
   const handleSubmit = (event) => {
     event.preventDefault()
 
@@ -8,13 +15,7 @@ export default function TodoInput({ addTodo }) {
 
     if (!text) return (input.value = '')
 
-    const todo = {
-      id: globalThis.crypto.randomUUID(),
-      text,
-      completed: false,
-    }
-
-    addTodo({ todo })
+    addTodo(text)
     input.value = ''
   }
 

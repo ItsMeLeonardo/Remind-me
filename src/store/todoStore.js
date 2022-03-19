@@ -14,7 +14,7 @@ export const useTodoStore = create((set, get) => ({
   //state
   todos: [],
   //actions
-  getInitialTodos: async () => {
+  setInitialTodos: async () => {
     const todos = await getTodos()
     set({ todos })
   },
@@ -25,7 +25,7 @@ export const useTodoStore = create((set, get) => ({
       completed: false,
     }
     const todos = [todo, ...get().todos]
-    await saveTodos({ todos })
+    await saveTodos({ todo })
     set({ todos })
   },
   toggleTodo: async (id) => {
@@ -44,7 +44,7 @@ export const useTodoStore = create((set, get) => ({
     set({ todos })
   },
   clearCompleted: async () => {
-    const { false: incomplete, true: completed } = groupBy(todos, 'completed')
+    const { false: incomplete, true: completed } = groupBy(get().todos, 'completed')
     if (!completed) return
     await deleteCompleted(completed)
     set({ todos: incomplete || [] })
