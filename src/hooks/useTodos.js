@@ -1,24 +1,22 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useRecoilState } from 'recoil'
+import { useCallback } from 'react'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 
-import { todoState } from '../store/todos'
+import { todoState, todosToShow, itemsLeftState } from '../store/todos'
 
 import {
   deleteCompleted,
   deleteTodo as deleteTodoFromService,
-  getTodos,
   saveTodos,
   toggleTodo as toggleTodoFromService,
 } from '../services/todos'
 import { groupBy } from '../utils/groupBy'
 
 export function useTodos() {
-  const [todos, setTodos] = useRecoilState(todoState)
+  const setTodos = useSetRecoilState(todoState)
 
-  useEffect(() => {
-    if (todos.length !== 0) return
-    getTodos().then(setTodos).catch(console.log)
-  }, [])
+  const allStateTodos = useRecoilValue(todoState)
+  const todos = useRecoilValue(todosToShow)
+  const itemsLeft = useRecoilValue(itemsLeftState)
 
   const toggleTodo = useCallback(({ id }) => {
     setTodos((prevTodos) =>
@@ -42,19 +40,32 @@ export function useTodos() {
     })
   }, [])
 
-  const addTodo = useCallback(({ todo }) => {
+  const addTodo = useCallback(({ text }) => {
+    const todo = {
+      id: globalThis.crypto.randomUUID(),
+      text,
+      completed: false,
+    }
     saveTodos({ todo }).then(() => {
       setTodos((prevTodos) => [todo, ...prevTodos])
     })
   }, [])
 
   const clearCompleted = () => {
-    const { false: incomplete, true: completed } = groupBy(todos, 'completed')
+    const { false: incomplete, true: completed } = groupBy(allStateTodos, 'completed')
     if (completed) {
       setTodos(incomplete || [])
       deleteCompleted(completed).then()
     }
   }
+
+  const reorderTodos = useCallback(
+    (newOrder) => {
+      if (newOrder.length !== allStateTodos.length) return
+      setTodos(newOrder)
+    },
+    [allStateTodos],
+  )
 
   return {
     todos,
@@ -62,6 +73,7 @@ export function useTodos() {
     deleteTodo,
     addTodo,
     clearCompleted,
-    setTodos,
+    reorderTodos,
+    itemsLeft,
   }
 }

@@ -1,4 +1,8 @@
-export default function TodoInput({ addTodo }) {
+import { useTodos } from '../../hooks/useTodos'
+
+export default function TodoInput() {
+  const { addTodo } = useTodos()
+
   const handleSubmit = (event) => {
     event.preventDefault()
 
@@ -8,13 +12,7 @@ export default function TodoInput({ addTodo }) {
 
     if (!text) return (input.value = '')
 
-    const todo = {
-      id: globalThis.crypto.randomUUID(),
-      text,
-      completed: false,
-    }
-
-    addTodo({ todo })
+    addTodo({ text })
     input.value = ''
   }
 
