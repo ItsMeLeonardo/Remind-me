@@ -1,4 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useRecoilState } from 'recoil'
+
+import { todoState } from '../store/todos'
+
 import {
   deleteCompleted,
   deleteTodo as deleteTodoFromService,
@@ -9,7 +13,7 @@ import {
 import { groupBy } from '../utils/groupBy'
 
 export function useTodos() {
-  const [todos, setTodos] = useState([])
+  const [todos, setTodos] = useRecoilState(todoState)
 
   useEffect(() => {
     if (todos.length !== 0) return
