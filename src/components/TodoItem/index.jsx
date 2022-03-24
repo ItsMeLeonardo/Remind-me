@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react'
+import { useSetAtom, useAtom } from 'jotai'
 import { motion, useAnimation } from 'framer-motion'
+
+import { toggleTodoAtom, deleteTodoAtom } from '@/Atoms/todos'
 
 import CheckIcon from '../../Icons/CheckIcon'
 import CloseIcon from '../../Icons/CloseIcon'
@@ -33,7 +36,9 @@ const iconVariants = {
   },
 }
 
-function TodoItem({ todo, toggleCompleteTodo, deleteTodo, index } = {}) {
+function TodoItem({ todo, index } = {}) {
+  const [, toggleTodo] = useAtom(toggleTodoAtom)
+  const deleteTodo = useSetAtom(deleteTodoAtom)
   const controls = useAnimation()
 
   const isCompleted = todo.completed
@@ -47,11 +52,11 @@ function TodoItem({ todo, toggleCompleteTodo, deleteTodo, index } = {}) {
   }, [isCompleted])
 
   const handleCompleted = () => {
-    toggleCompleteTodo({ id: todo.id })
+    toggleTodo(todo.id)
   }
 
   const handleDelete = () => {
-    deleteTodo({ id: todo.id })
+    deleteTodo(todo.id)
   }
 
   return (
@@ -65,7 +70,6 @@ function TodoItem({ todo, toggleCompleteTodo, deleteTodo, index } = {}) {
       layoutId={todo.id}
       className="flex items-center justify-between gap-4 p-4 rounded hover:bg-gray-50 hover:cursor-grab active:shadow-3xl active:cursor-grabbing dark:text-white dark:hover:bg-zinc-700"
     >
-      {/* FIXME: complete the animation :D */}
       <motion.div
         animate={controls}
         variants={iconVariants}
@@ -99,4 +103,6 @@ function TodoItem({ todo, toggleCompleteTodo, deleteTodo, index } = {}) {
   )
 }
 
-export default React.memo(TodoItem)
+export default React.memo(TodoItem, (prevProps, nextProps) => {
+  return prevProps.todo.completed === nextProps.todo.completed
+})

@@ -1,4 +1,9 @@
-export default function TodoInput({ addTodo }) {
+import { useSetAtom } from 'jotai'
+
+import { addTodoAtom } from '@/Atoms/todos'
+
+export default function TodoInput() {
+  const addTodo = useSetAtom(addTodoAtom)
   const handleSubmit = (event) => {
     event.preventDefault()
 
@@ -8,13 +13,8 @@ export default function TodoInput({ addTodo }) {
 
     if (!text) return (input.value = '')
 
-    const todo = {
-      id: globalThis.crypto.randomUUID(),
-      text,
-      completed: false,
-    }
+    addTodo(text)
 
-    addTodo({ todo })
     input.value = ''
   }
 

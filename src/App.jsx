@@ -1,69 +1,41 @@
-import { useState } from 'react'
-import { motion, AnimatePresence, Reorder } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { useAtom } from 'jotai'
+import { motion } from 'framer-motion'
 
-import TodoItem from './components/TodoItem'
 import TodoFilters from './components/TodoFilters'
-import TodoContent from './components/TodoContent'
+import TodoList from './components/TodoList'
 import TodoInput from './components/TodoInput'
 import FilterContent from './components/FilterContent'
 import Header from './components/Header'
 
-import { useTodos } from './hooks/useTodos'
-
-const FILTER_VALUES = {
-  ALL: 'all',
-  ACTIVE: 'active',
-  COMPLETED: 'completed',
-}
+import { getTodos } from '@/services/todos'
+import {
+  todoAtom,
+  filterAtom,
+  itemsLeftAtom,
+  FILTER_VALUES,
+  clearCompleteAtom,
+} from '@/Atoms/todos'
 
 function App() {
-  const { todos, addTodo, deleteTodo, clearCompleted, toggleTodo, setTodos } = useTodos()
+  const [, setInitialTodos] = useAtom(todoAtom)
+  const [, clearCompleted] = useAtom(clearCompleteAtom)
+  const [filter, setFilter] = useAtom(filterAtom)
+  const [itemsLeft] = useAtom(itemsLeftAtom)
 
-  const [filter, setFilter] = useState(FILTER_VALUES.ALL)
-
-  const onReorder = (todos) => {
-    if (filter !== FILTER_VALUES.ALL) {
-      return
-    }
-    setTodos(todos)
-  }
-  let todosToShow = todos
-  if (filter === FILTER_VALUES.ACTIVE) {
-    todosToShow = todos.filter((todo) => !todo.completed)
-  }
-  if (filter === FILTER_VALUES.COMPLETED) {
-    todosToShow = todos.filter((todo) => todo.completed)
-  }
-
-  const itemLefts = todos.filter((todo) => !todo.completed).length
-
+  useEffect(() => {
+    getTodos().then(setInitialTodos)
+  }, [])
   return (
     <section className="flex flex-col justify-center items-center h-full">
       <Header />
-
       <motion.div className="w-11/12 flex flex-col relative md:w-9/12 lg:w-6/12">
-        <TodoInput addTodo={addTodo} />
-        <TodoContent>
-          <Reorder.Group axis="y" values={todos} onReorder={onReorder}>
-            <AnimatePresence>
-              {todosToShow.map((item, index) => (
-                <Reorder.Item key={item.id} value={item}>
-                  <TodoItem
-                    todo={item}
-                    completed={item.completed}
-                    toggleCompleteTodo={toggleTodo}
-                    deleteTodo={deleteTodo}
-                    index={index}
-                  />
-                </Reorder.Item>
-              ))}
-            </AnimatePresence>
-          </Reorder.Group>
-        </TodoContent>
+        <TodoInput />
+        <TodoList />
 
         <FilterContent>
           <p className="text-xs whitespace-nowrap text-gray-500">
-            {itemLefts} items left
+            {itemsLeft} items left
           </p>
           <TodoFilters
             filterActive={filter}
