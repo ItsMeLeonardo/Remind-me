@@ -1,21 +1,20 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useContext } from 'react'
 import {
   deleteCompleted,
   deleteTodo as deleteTodoFromService,
-  getTodos,
   saveTodos,
   toggleTodo as toggleTodoFromService,
 } from '../services/todos'
 import { groupBy } from '../utils/groupBy'
 
+import { TodoContext } from '../context/todoContext'
+
 export function useTodos() {
-  const [todos, setTodos] = useState([])
+  const { todos, setTodos } = useContext(TodoContext)
 
-  useEffect(() => {
-    if (todos.length !== 0) return
-    getTodos().then(setTodos).catch(console.log)
-  }, [])
-
+  /**
+   * @param {Number} id - Todo id
+   */
   const toggleTodo = useCallback(({ id }) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) => {
@@ -32,18 +31,27 @@ export function useTodos() {
     )
   }, [])
 
+  /**
+   * @param {Number} id - Todo id
+   */
   const deleteTodo = useCallback(({ id }) => {
     deleteTodoFromService({ id }).then(() => {
       setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id))
     })
   }, [])
 
+  /**
+   * @param {Object} Todo - the todo to added
+   */
   const addTodo = useCallback(({ todo }) => {
     saveTodos({ todo }).then(() => {
-      setTodos((prevTodos) => [...prevTodos, todo])
+      setTodos((prevTodos) => [todo, ...prevTodos])
     })
   }, [])
 
+  /**
+   * @description Delete all completed todos
+   */
   const clearCompleted = () => {
     const { false: incomplete, true: completed } = groupBy(todos, 'completed')
     if (completed) {
@@ -58,5 +66,6 @@ export function useTodos() {
     deleteTodo,
     addTodo,
     clearCompleted,
+    setTodos,
   }
 }
