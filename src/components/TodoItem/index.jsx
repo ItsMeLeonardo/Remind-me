@@ -57,7 +57,7 @@ function TodoItem({ todo, index, toggleTodo, deleteTodo } = {}) {
   }
 
   return (
-    <motion.div
+    <motion.label
       initial="hidden"
       animate="visible"
       variants={rowVariants}
@@ -65,7 +65,7 @@ function TodoItem({ todo, index, toggleTodo, deleteTodo } = {}) {
       whileDrag={{ background: '#000' }}
       custom={index}
       layoutId={todo.id}
-      className="flex items-center justify-between gap-4 p-4 rounded hover:bg-gray-50 hover:cursor-grab active:shadow-3xl active:cursor-grabbing dark:text-white dark:hover:bg-zinc-700"
+      className="flex items-center justify-between gap-4 p-4 rounded hover:bg-gray-50 cursor-pointer active:shadow-3xl active:cursor-grabbing dark:text-white dark:hover:bg-zinc-700"
     >
       <motion.div
         animate={controls}
@@ -83,9 +83,7 @@ function TodoItem({ todo, index, toggleTodo, deleteTodo } = {}) {
           className={`bg-gradient-to-r ${checkboxStyles.checked} appearance-none w-6 h-6 rounded-full cursor-pointer`}
         />
       </motion.div>
-      <label htmlFor={todo.id} className="cursor-pointer text-sm w-full">
-        {todo.text}
-      </label>
+      <span className="text-sm w-full">{todo.text}</span>
       <motion.button
         transition={{ duration: 0.25 }}
         whileHover={{ scale: 1.125 }}
@@ -96,7 +94,7 @@ function TodoItem({ todo, index, toggleTodo, deleteTodo } = {}) {
       >
         <CloseIcon className="text-zinc-800 group-hover:text-white transition duration-500 dark:text-white" />
       </motion.button>
-    </motion.div>
+    </motion.label>
   )
 }
 
